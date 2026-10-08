@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>Smart Symbol Table Generator</title>
+
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='style.css') }}">
+
+</head>
+
+<body>
+
+<div class="container">
+
+    <!-- HEADER -->
+
+    <header>
+
+        <h1>Smart Symbol Table Generator</h1>
+
+        <p>Scope Resolution & Error Detection</p>
+
+    </header>
+
+
+    <!-- SOURCE CODE -->
+
+    <section class="card">
+
+        <h2>Source Code</h2>
+
+        <form method="POST">
+
+            <textarea
+                name="code"
+                placeholder="Enter your C source code here..."
+                required>{{ code }}</textarea>
+
+            <button type="submit">
+                Analyze Code
+            </button>
+
+        </form>
+
+    </section>
+
+
+    {% if analyzed %}
+
+
+    <!-- SYMBOL TABLE -->
+
+    <section class="card">
+
+        <h2>Symbol Table</h2>
+
+        {% if symbols %}
+
+        <div class="table-container">
+
+            <table>
+
+                <thead>
+
+                    <tr>
+                        <th>Name</th>
+                        <th>Type</th>
+                        <th>Scope</th>
+                        <th>Line</th>
+                        <th>Address</th>
+                    </tr>
+
+                </thead>
+
+                <tbody>
+
+                    {% for symbol in symbols %}
+
+                    <tr>
+
+                        <td>{{ symbol.name }}</td>
+
+                        <td>{{ symbol.type }}</td>
+
+                        <td>{{ symbol.scope }}</td>
+
+                        <td>{{ symbol.line }}</td>
+
+                        <td>{{ symbol.address }}</td>
+
+                    </tr>
+
+                    {% endfor %}
+
+                </tbody>
+
+            </table>
+
+        </div>
+
+        {% else %}
+
+        <p class="info">
+            No identifiers found.
+        </p>
+
+        {% endif %}
+
+    </section>
+
+
+    <!-- ERROR REPORT -->
+
+    <section class="card">
+
+        <h2>Error Report</h2>
+
+        {% if errors %}
+
+            {% for error in errors %}
+
+            <div class="error">
+
+                <strong>Line {{ error.line }}:</strong>
+
+                {{ error.message }}
+
+            </div>
+
+            {% endfor %}
+
+        {% else %}
+
+            <div class="success">
+
+                ✓ No semantic errors detected.
+
+            </div>
+
+        {% endif %}
+
+    </section>
+
+
+    {% endif %}
+
+</div>
+
+</body>
+
+</html>
