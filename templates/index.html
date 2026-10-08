@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Smart Symbol Table Analyzer</title>
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: #f4f6f8;
+            margin: 0;
+            padding: 0;
+        }
+
+        .container {
+            width: 90%;
+            max-width: 1100px;
+            margin: 40px auto;
+        }
+
+        h1 {
+            text-align: center;
+            color: #222;
+        }
+
+        .card {
+            background: white;
+            padding: 25px;
+            margin-top: 25px;
+            border-radius: 10px;
+            box-shadow: 0 3px 12px rgba(0,0,0,0.1);
+        }
+
+        textarea {
+            width: 100%;
+            height: 280px;
+            padding: 15px;
+            box-sizing: border-box;
+            font-family: monospace;
+            font-size: 15px;
+            border: 1px solid #ccc;
+            border-radius: 6px;
+            resize: vertical;
+        }
+
+        button {
+            margin-top: 15px;
+            padding: 12px 25px;
+            border: none;
+            border-radius: 6px;
+            background: #222;
+            color: white;
+            font-size: 16px;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background: #444;
+        }
+
+        h2 {
+            margin-top: 0;
+            color: #333;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 15px;
+        }
+
+        th, td {
+            border: 1px solid #ddd;
+            padding: 10px;
+            text-align: center;
+        }
+
+        th {
+            background: #222;
+            color: white;
+        }
+
+        .error {
+            background: #ffe5e5;
+            border-left: 5px solid #d00;
+            padding: 10px;
+            margin: 8px 0;
+            color: #900;
+        }
+
+        .success {
+            background: #e5ffe9;
+            border-left: 5px solid green;
+            padding: 10px;
+            margin: 8px 0;
+            color: #075b14;
+        }
+
+        .empty {
+            color: #666;
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="container">
+
+    <h1>Smart Symbol Table Analyzer</h1>
+
+    <div class="card">
+
+        <h2>Enter Source Code</h2>
+
+        <form method="POST">
+
+            <textarea name="code"
+                      placeholder="Enter your C source code here...">{{ code }}</textarea>
+
+            <br>
+
+            <button type="submit">
+                Analyze Code
+            </button>
+
+        </form>
+
+    </div>
+
+
+    {% if analyzed %}
+
+    <div class="card">
+
+        <h2>Symbol Table</h2>
+
+        {% if symbols %}
+
+        <table>
+
+            <tr>
+                <th>Name</th>
+                <th>Type</th>
+                <th>Scope</th>
+                <th>Line</th>
+                <th>Address</th>
+            </tr>
+
+            {% for symbol in symbols %}
+
+            <tr>
+                <td>{{ symbol.name }}</td>
+                <td>{{ symbol.type }}</td>
+                <td>{{ symbol.scope }}</td>
+                <td>{{ symbol.line }}</td>
+                <td>{{ symbol.address }}</td>
+            </tr>
+
+            {% endfor %}
+
+        </table>
+
+        {% else %}
+
+        <p class="empty">
+            No symbols found.
+        </p>
+
+        {% endif %}
+
+    </div>
+
+
+    <div class="card">
+
+        <h2>Error Detection</h2>
+
+        {% if errors %}
+
+            {% for error in errors %}
+
+            <div class="error">
+                <strong>Line {{ error.line }}:</strong>
+                {{ error.message }}
+            </div>
+
+            {% endfor %}
+
+        {% else %}
+
+            <div class="success">
+                No errors detected.
+            </div>
+
+        {% endif %}
+
+    </div>
+
+    {% endif %}
+
+</div>
+
+</body>
+</html>
